@@ -55,8 +55,8 @@
             return $filename;
         }
 
-        public static function build_directory_tree($dir, $ignore, $mode) {
-            return static::directory_tree_builder($dir, $ignore, $mode);
+        public static function build_directory_tree($dir, $ignore, $mode, $index_filename) {
+            return static::directory_tree_builder($dir, $ignore, $mode, $index_filename);
         }
 
 
@@ -211,7 +211,7 @@ EOT;
             return $pa;
         }
 
-        private static function directory_tree_builder($dir, $ignore, $mode = Daux::LIVE_MODE, $parents = null) {
+        private static function directory_tree_builder($dir, $ignore, $mode = Daux::LIVE_MODE, $index_filename, $parents = null) {
             if ($dh = opendir($dir)) {
                 $node = new Directory_Entry($dir, $parents);
                 $new_parents = $parents;
@@ -224,7 +224,7 @@ EOT;
                     if (!is_dir($path) && in_array($entry, $ignore['files'])) continue;
 
                     $file_details = static::pathinfo($path);
-                    if (is_dir($path)) $entry = static::directory_tree_builder($path, $ignore, $mode, $new_parents);
+                    if (is_dir($path)) $entry = static::directory_tree_builder($path, $ignore, $mode, $index_filename, $new_parents);
                     else if (in_array($file_details['extension'], Daux::$VALID_MARKDOWN_EXTENSIONS))
                     {
                         $entry = new Directory_Entry($path, $new_parents);
@@ -234,7 +234,7 @@ EOT;
                 }
                 $node->sort();
                 $node->first_page = $node->get_first_page();
-                $index_key = ($mode === Daux::LIVE_MODE) ? 'index' : 'index.html';
+                $index_key = ($mode === Daux::LIVE_MODE) ? $index_filename : $index_filename .'.html';
                 if (isset($node->value[$index_key])) {
                     $node->value[$index_key]->first_page = $node->first_page;
                     $node->index_page =  $node->value[$index_key];

@@ -137,7 +137,8 @@
         }
 
         private function generate_directory_tree() {
-            $this->tree = DauxHelper::build_directory_tree($this->docs_path, $this->options['ignore'], $this->mode);
+            $index_filename = isset($this->options['index_filename']) ? $this->options['index_filename'] : "index";
+            $this->tree = DauxHelper::build_directory_tree($this->docs_path, $this->options['ignore'], $this->mode, $index_filename);
             if (!empty($this->options['languages'])) {
                 foreach ($this->options['languages'] as $key => $node) {
                     $this->tree->value[$key]->title = $node;
