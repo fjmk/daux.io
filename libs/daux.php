@@ -282,7 +282,12 @@
                     $params['toggle_code'] = $this->options['toggle_code'];
                     $params['float'] = $this->options['float'];
                     $params['date_modified'] = $this->options['date_modified'];
-                    $params['file_editor'] = $this->options['file_editor'];
+                    if (is_array($this->options['ip_allowed'])) {
+                        $ip_allowed = in_array($_SERVER['REMOTE_ADDR'], $this->options['ip_allowed']);
+                    } else {
+                        $ip_allowed = true;
+                    }
+                    $params['file_editor'] = $this->options['file_editor'] && $ip_allowed;
                     break;
 
                 case Daux::STATIC_MODE:

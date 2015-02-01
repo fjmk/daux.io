@@ -12,6 +12,10 @@
     "date_modified": true,
     "float": true,
     "file_editor": false,   
+    "ip_allowed": {
+            "localhost": "127.0.0.2",
+            "home":      "my.ip.at.home"
+    },
     "repo": "justinwalsh/daux.io",
     "ignore": {
             "files": ["Work_In_Progress.md"],
